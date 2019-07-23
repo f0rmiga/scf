@@ -7,6 +7,15 @@ load("//dev/minikube:binary.bzl", "minikube_binary")
 load("//dev/kind:binary.bzl", "kind_binary")
 load(":def.bzl", "project")
 
+load("//rules/external_binary:def.bzl", "external_binary")
+
+external_binary(
+    name = "shellcheck",
+    darwin = project.shellcheck.platforms.darwin,
+    linux = project.shellcheck.platforms.linux,
+    windows = project.shellcheck.platforms.windows,
+)
+
 http_archive(
     name = "cf_deployment",
     build_file_content = """

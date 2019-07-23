@@ -18,4 +18,6 @@ if [[ "$(echo -e "${min_version}\\n${current_version}" | sort -V | head -n 1)" !
   exit 1
 fi
 
-find . -name '*.sh' -print0 | xargs -0 -n1 shellcheck
+# shellcheck disable=SC2046
+# We want word splitting with find.
+bazel run @shellcheck//executable -- $(find . -name '*.sh')
