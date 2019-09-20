@@ -1,19 +1,21 @@
+.tags: &tags
+- personal-minikube-tassis
+
 stages:
 - lint
 - build
+- publish
 
 lint:
   stage: lint
-  tags:
-  - personal-minikube-tassis
+  tags: *tags
   image: thulioassis/bazel-docker-image:0.29.1
   script:
   - ./dev/linters/shellcheck.sh
 
 build:chart:
   stage: build
-  tags:
-  - personal-minikube-tassis
+  tags: *tags
   image: thulioassis/bazel-docker-image:0.29.1
   script:
   - bazel build //deploy/helm/scf:chart
@@ -22,3 +24,10 @@ build:chart:
     paths:
     - output/scf-*.tgz
     expire_in: 1 week
+
+publish:chart:
+  stage: publish
+  tags: *tags
+  image: opensuse/leap:15.1
+  script:
+  - ls output/
